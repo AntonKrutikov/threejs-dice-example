@@ -10,12 +10,12 @@ function dice_initialize(container) {
     var set = $t.id('set');
     var selector_div = $t.id('selector_div');
     var info_div = $t.id('info_div');
-    on_set_change();
+    //on_set_change();
 
     $t.dice.use_true_random = false;
 
-    function on_set_change(ev) { set.style.width = set.value.length + 3 + 'ex'; }
-    $t.bind(set, 'keyup', on_set_change);
+    //function on_set_change(ev) { set.style.width = set.value.length + 3 + 'ex'; }
+    //$t.bind(set, 'keyup', on_set_change);
     $t.bind(set, 'mousedown', function(ev) { ev.stopPropagation(); });
     $t.bind(set, 'mouseup', function(ev) { ev.stopPropagation(); });
     $t.bind(set, 'focus', function(ev) { $t.set(container, { class: '' }); });
@@ -67,7 +67,7 @@ function dice_initialize(container) {
     }
 
     function notation_getter() {
-        return $t.dice.parse_notation(set.value);
+        return $t.dice.parse_notation('d6+d12'); //Hardcoded d6+d12
     }
 
     function after_roll(notation, result) {
@@ -79,8 +79,8 @@ function dice_initialize(container) {
         }
         if (result.length > 1) res += ' = ' + 
                 (result.reduce(function(s, a) { return s + a; }) + notation.constant);
-        label.innerHTML = res;
-        info_div.style.display = 'inline-block';
+        // label.innerHTML = res;
+        // info_div.style.display = 'inline-block';
     }
 
     box.bind_mouse(container, notation_getter, before_roll, after_roll);

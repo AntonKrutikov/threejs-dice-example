@@ -141,6 +141,9 @@
             '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
     this.standart_d100_dice_face_labels = [' ', '00', '10', '20', '30', '40', '50',
             '60', '70', '80', '90'];
+    this.standart_d6_dice_face_labels = [' ', ' ', 'now', 'past', 'future', 'always', 'some time', 'never'];
+    this.standart_d12_dice_face_labels = [' ', ' ', 'love', 'wisdom', 'gratitude', 'trust', 'gratitude', 'courage', 'shame', 'regret', 'fear', 'desire', 'anger', 'guilt'];
+
 
     function calc_texture_size(approx) {
         return Math.pow(2, Math.floor(Math.log(approx) / Math.log(2)));
@@ -159,18 +162,28 @@
             context.textAlign = "center";
             context.textBaseline = "middle";
             context.fillStyle = color;
-            context.fillText(text, canvas.width / 2, canvas.height / 2);
-            if (text == '6' || text == '9') {
-                context.fillText('  .', canvas.width / 2, canvas.height / 2);
+            context.save()
+            context.translate(canvas.width / 2, canvas.height / 2)
+            context.rotate(180*(Math.PI/180))
+            context.translate(-canvas.width / 2, -canvas.height / 2)
+            if (text == "some time") {
+                context.fillText("some", canvas.width / 2, canvas.height / 2 - 0.1*canvas.height);
+                context.fillText("time", canvas.width / 2, canvas.height / 2 + 0.1*canvas.height);
+            } else {
+                context.fillText(text, canvas.width / 2, canvas.height / 2);
             }
+            context.restore()
+
             var texture = new THREE.Texture(canvas);
             texture.needsUpdate = true;
+            console.log(texture.rotation)
             return texture;
         }
         var materials = [];
         for (var i = 0; i < face_labels.length; ++i)
             materials.push(new THREE.MeshPhongMaterial($t.copyto(this.material_options,
                         { map: create_text_texture(face_labels[i], this.label_color, this.dice_color) })));
+        console.log(materials)
         return materials;
     }
 
@@ -283,7 +296,8 @@
     this.desk_color = 0xdfdfdf;
     this.use_shadows = true;
 
-    this.known_types = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
+    // this.known_types = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
+    this.known_types = ['d6', 'd12'];
     this.dice_face_range = { 'd4': [1, 4], 'd6': [1, 6], 'd8': [1, 8], 'd10': [0, 9], 
         'd12': [1, 12], 'd20': [1, 20], 'd100': [0, 9] };
     this.dice_mass = { 'd4': 300, 'd6': 300, 'd8': 340, 'd10': 350, 'd12': 350, 'd20': 400, 'd100': 350 };
@@ -299,10 +313,10 @@
     }
 
     this.create_d6 = function() {
-        if (!this.d6_geometry) this.d6_geometry = this.create_d6_geometry(this.scale * 0.9);
-        if (!this.dice_material) this.dice_material = new THREE.MeshFaceMaterial(
-                this.create_dice_materials(this.standart_d20_dice_face_labels, this.scale / 2, 1.0));
-        return new THREE.Mesh(this.d6_geometry, this.dice_material);
+        if (!this.d6_geometry) this.d6_geometry = this.create_d6_geometry(this.scale * 2);
+        if (!this.d6_material) this.d6_material = new THREE.MeshFaceMaterial(
+                this.create_dice_materials(this.standart_d6_dice_face_labels, this.scale, 3));
+        return new THREE.Mesh(this.d6_geometry, this.d6_material);
     }
 
     this.create_d8 = function() {
@@ -320,10 +334,10 @@
     }
 
     this.create_d12 = function() {
-        if (!this.d12_geometry) this.d12_geometry = this.create_d12_geometry(this.scale * 0.9);
-        if (!this.dice_material) this.dice_material = new THREE.MeshFaceMaterial(
-                this.create_dice_materials(this.standart_d20_dice_face_labels, this.scale / 2, 1.0));
-        return new THREE.Mesh(this.d12_geometry, this.dice_material);
+        if (!this.d12_geometry) this.d12_geometry = this.create_d12_geometry(this.scale * 2);
+        if (!this.d12) this.d12 = new THREE.MeshFaceMaterial(
+                this.create_dice_materials(this.standart_d12_dice_face_labels, this.scale, 3.5));
+        return new THREE.Mesh(this.d12_geometry, this.d12);
     }
 
     this.create_d20 = function() {
@@ -734,7 +748,7 @@
 
     this.dice_box.prototype.draw_selector = function() {
         this.clear();
-        var step = this.w / 4.5;
+        var step = this.w / 2;
         this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w * 6, this.h * 6, 1, 1), 
                 new THREE.MeshPhongMaterial(that.selector_back_colors));
         this.pane.receiveShadow = true;
@@ -743,11 +757,12 @@
 
         var mouse_captured = false;
 
-        for (var i = 0, pos = -3; i < that.known_types.length; ++i, ++pos) {
+        for (var i = 0, pos = -0.5; i < that.known_types.length; ++i, ++pos) {
             var dice = $t.dice['create_' + that.known_types[i]]();
             dice.position.set(pos * step, 0, step * 0.5);
             dice.castShadow = true;
             dice.userData = that.known_types[i];
+            console.log(dice)
             this.dices.push(dice); this.scene.add(dice);
         }
 
