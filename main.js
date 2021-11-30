@@ -42,13 +42,14 @@ function dice_initialize(container) {
         $t.dice.label_color = '#202020';
     }
 
+    // let ratio = window.devicePixelRatio
     var box = new $t.dice.dice_box(canvas, { w: canvas.getBoundingClientRect().width, h: canvas.getBoundingClientRect().height });
     box.animate_selector = false;
 
     $t.bind(window, 'resize', function() {
         canvas.style.width = window.innerWidth - 1 + 'px';
         canvas.style.height = window.innerHeight - 1 + 'px';
-        box.reinit(canvas, { w: 500, h: 300 });
+        box.reinit(canvas, { w: canvas.getBoundingClientRect().width, h: canvas.getBoundingClientRect().height });
     });
 
     function show_selector() {
@@ -56,8 +57,13 @@ function dice_initialize(container) {
         selector_div.style.display = 'inline-block';
         box.draw_selector();
     }
-
+    let throws = 0
     function before_roll(vectors, notation, callback) {
+        throws++
+        if (throws == 3) {
+            info_div.style.display = 'block';
+            return
+        }
         info_div.style.display = 'none';
         selector_div.style.display = 'none';
         // do here rpc call or whatever to get your own result of throw.
@@ -70,7 +76,9 @@ function dice_initialize(container) {
         return $t.dice.parse_notation('d6+d12'); //Hardcoded d6+d12
     }
 
+
     function after_roll(notation, result) {
+
         if (params.chromakey || params.noresult) return;
         var res = result.join(' ');
         if (notation.constant) {

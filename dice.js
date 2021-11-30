@@ -292,8 +292,8 @@
     this.dice_color = '#202020';
     this.ambient_light_color = 0xf0f5fb;
     this.spot_light_color = 0xefdfd5;
-    this.selector_back_colors = { color: 0x404040, shininess: 0, emissive: 0x858787 };
-    this.desk_color = 0xdfdfdf;
+    this.selector_back_colors = { color: 0x000000};
+    this.desk_color = 0x000000;
     this.use_shadows = true;
 
     // this.known_types = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
@@ -303,22 +303,21 @@
     this.dice_mass = { 'd4': 300, 'd6': 300, 'd8': 340, 'd10': 350, 'd12': 350, 'd20': 400, 'd100': 350 };
     this.dice_inertia = { 'd4': 5, 'd6': 13, 'd8': 10, 'd10': 9, 'd12': 8, 'd20': 6, 'd100': 9 };
 
-    let scale = 100;
+    this.scale = 250;
     
 
-    this.create_d6 = () => {
+    this.create_d6 = (scale) => {
         if (!this.d6_geometry) this.d6_geometry = this.create_d6_geometry(scale * 2);
-        
         if (!this.d6_material) this.d6_material = new THREE.MeshFaceMaterial(
                 this.create_dice_materials(this.standart_d6_dice_face_labels, scale, 3));
         return new THREE.Mesh(this.d6_geometry, this.d6_material);
     }
 
 
-    this.create_d12 = function() {
-        if (!this.d12_geometry) this.d12_geometry = this.create_d12_geometry(this.scale * 2);
+    this.create_d12 = (scale) => {
+        if (!this.d12_geometry) this.d12_geometry = this.create_d12_geometry(scale * 2);
         if (!this.d12) this.d12 = new THREE.MeshFaceMaterial(
-                this.create_dice_materials(this.standart_d12_dice_face_labels, this.scale, 3.5));
+                this.create_dice_materials(this.standart_d12_dice_face_labels, scale, 3.5));
         return new THREE.Mesh(this.d12_geometry, this.d12);
     }
 
@@ -463,11 +462,23 @@
         this.light.shadowMapHeight = 1024;
         this.scene.add(this.light);
 
+      
+
+
         if (this.desk) this.scene.remove(this.desk);
         this.desk = new THREE.Mesh(new THREE.PlaneGeometry(this.w * 2, this.h * 2, 1, 1), 
                 new THREE.MeshPhongMaterial({ color: that.desk_color }));
         this.desk.receiveShadow = that.use_shadows;
         this.scene.add(this.desk);
+
+        // let logoTexture = THREE.ImageUtils.loadTexture( "/GraticubeTM-w.png" );
+
+        // var logoGeom = new THREE.PlaneGeometry(389,100);
+        // var logoMat = new THREE.MeshBasicMaterial(
+        //                     {color: 0xffffff,
+        //                         map: logoTexture, transparent: true} );
+        // var logoMesh = new THREE.Mesh(logoGeom, logoMat);
+        // this.scene.add(logoMesh);
 
         this.renderer.render(this.scene, this.camera);
     }
@@ -509,8 +520,7 @@
     }
 
     this.dice_box.prototype.create_dice = function(type, pos, velocity, angle, axis) {
-        console.log(this.scale, 'xxxx')
-        var dice = that['create_' + type](50);
+        var dice = that['create_' + type](70);
         dice.castShadow = true;
         dice.dice_type = type;
         dice.body = new CANNON.RigidBody(that.dice_mass[type],
@@ -717,28 +727,40 @@
 
     this.dice_box.prototype.draw_selector = function() {
         this.clear();
-        var step = this.w / 2;
+        var step = 300;
         this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w * 6, this.h * 6, 1, 1), 
                 new THREE.MeshPhongMaterial(that.selector_back_colors));
         this.pane.receiveShadow = true;
         this.pane.position.set(0, 0, 1);
         this.scene.add(this.pane);
 
+
+
         var mouse_captured = false;
 
+
         for (var i = 0, pos = -0.5; i < that.known_types.length; ++i, ++pos) {
-            var dice = $t.dice['create_' + that.known_types[i]]();
-            dice.position.set(pos * step, 0, step * 0.5);
+            var dice = $t.dice['create_' + that.known_types[i]](70);
+            dice.position.set(pos * step, 0, (step * 0.5));
             dice.castShadow = true;
             dice.userData = that.known_types[i];
             console.log(dice)
             this.dices.push(dice); this.scene.add(dice);
         }
+                
+        let logoTexture = THREE.ImageUtils.loadTexture( "/GraticubeTM-w.png" );
+        console.log(this.cw)
+        var logoGeom = new THREE.PlaneGeometry(389*1.2 > this.w ? this.w*1.2 : 389*1.2,100*1.2);
+        var logoMat = new THREE.MeshBasicMaterial(
+                            {color: 0xffffff,
+                                map: logoTexture, transparent: true, opacity: 1} );
+        var logoMesh = new THREE.Mesh(logoGeom, logoMat);
+        logoMesh.position.set(0, 200, 2);
+        this.scene.add(logoMesh);
 
         this.running = (new Date()).getTime();
         this.last_time = 0;
-        if (this.animate_selector) this.__selector_animate(this.running);
-        else this.renderer.render(this.scene, this.camera);
+        this.renderer.render(this.scene, this.camera);
     }
 
     function throw_dices(box, vector, boost, dist, notation_getter, before_roll, after_roll) {
