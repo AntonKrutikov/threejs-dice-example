@@ -748,9 +748,9 @@
             this.dices.push(dice); this.scene.add(dice);
         }
                 
-        let logoTexture = THREE.ImageUtils.loadTexture( "GraticubeTM-w.png" );
+        let logoTexture = THREE.ImageUtils.loadTexture( "GraticubeTM-400x400.png" );
         console.log(this.cw)
-        var logoGeom = new THREE.PlaneGeometry(389*1.2 > this.w ? this.w*1.2 : 389*1.2,100*1.2);
+        var logoGeom = new THREE.PlaneGeometry(400 > this.w ? this.w*1.2 : 400,400);
         var logoMat = new THREE.MeshBasicMaterial(
                             {color: 0xffffff,
                                 map: logoTexture, transparent: true, opacity: 1} );
