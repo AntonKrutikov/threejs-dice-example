@@ -141,7 +141,7 @@
             '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
     this.standart_d100_dice_face_labels = [' ', '00', '10', '20', '30', '40', '50',
             '60', '70', '80', '90'];
-    this.standart_d6_dice_face_labels = [' ', ' ', 'now', 'past', 'future', 'always', 'some time', 'never'];
+    this.standart_d6_dice_face_labels = [' ', ' ', 'never', 'past', 'future', 'always', 'some time', 'now'];
     this.standart_d12_dice_face_labels = [' ', ' ', 'love', 'wisdom', 'gratitude', 'trust', 'gratitude', 'courage', 'shame', 'regret', 'fear', 'desire', 'anger', 'guilt'];
 
 
