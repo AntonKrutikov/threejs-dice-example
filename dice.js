@@ -235,8 +235,8 @@
     this.dice_color = '#202020';
     this.ambient_light_color = 0xf0f5fb;
     this.spot_light_color = 0xefdfd5;
-    this.selector_back_colors = { color: 0x000000};
-    this.desk_color = 0x000000;
+    this.selector_back_colors = { color: 0xffffff};
+    this.desk_color = 0xffffff;
     this.use_shadows = true;
 
     this.known_types = ['d6', 'd12'];
@@ -657,7 +657,7 @@
         var logoGeom = new THREE.PlaneGeometry(400*1.5,400*1.5);
         var logoMat = new THREE.MeshBasicMaterial(
                             {color: 0xffffff,
-                                map: logoTexture, transparent: true, opacity: 1, shininess: 0} );
+                                map: logoTexture, transparent: true, opacity: 0.8} );
         logoMat.map.magFilter = THREE.LinearFilter;
         logoMat.map.minFilter = THREE.LinearFilter;
         var logoMesh = new THREE.Mesh(logoGeom, logoMat);

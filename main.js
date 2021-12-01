@@ -8,7 +8,7 @@ function preload_and_init(container) {
             img.onload = () => {
                 resolve(img)
             }
-            img.src = 'GraticubeTM-400x400_white.png'
+            img.src = 'logo_rainbow_400.png'
         }) 
     }
 
