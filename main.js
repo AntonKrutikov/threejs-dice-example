@@ -77,11 +77,11 @@ function dice_initialize(container) {
         }
     });
 
-    window.addEventListener("touchmove", function(event) {
-        if (event.target == canvas.querySelector('canvas')) {
-          event.preventDefault();
-        }
-      }, false);
+    // window.addEventListener("touchmove", function(event) {
+    //     if (event.target == canvas.querySelector('canvas')) {
+    //       event.preventDefault();
+    //     }
+    //   }, false);
 
     show_selector();
 }
