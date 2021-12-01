@@ -653,7 +653,7 @@
         let logoTexture = new THREE.Texture($t.logoTexture);
         logoTexture.needsUpdate = true
 
-        var logoGeom = new THREE.PlaneGeometry(400 * 1.5 > this.w ? this.w*1.5 : 400*1.5,400*1.5);
+        var logoGeom = new THREE.PlaneGeometry(400*1.5,400*1.5);
         var logoMat = new THREE.MeshBasicMaterial(
                             {color: 0xffffff,
                                 map: logoTexture, transparent: true, opacity: 1, shininess: 0} );
