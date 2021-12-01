@@ -153,10 +153,10 @@
             var ts = calc_texture_size(size + size * 2 * margin) * 2;
             console.log(ts)
             var canvas = document.createElement("canvas");
-            canvas.width = canvas.height = ts / 4;
+            canvas.width = canvas.height = 128;
             var context = canvas.getContext("2d");
 
-            context.font = ts / (1 + 2.2 * margin) / 4 + "pt Arial";
+            context.font = 128 / (1 + 2.2 * margin)+ "pt Arial";
             context.fillStyle = back_color;
             context.fillRect(0, 0, canvas.width, canvas.height);
             let base_image = $t.woodTexture
@@ -243,8 +243,6 @@
     this.dice_face_range = { 'd6': [1, 6], 'd12': [1, 12]};
     this.dice_mass = { 'd6': 300, 'd12': 350};
     this.dice_inertia = { 'd6': 13, 'd12': 8};
-
-    this.scale = 250;
     
     this.create_d6 = (scale) => {
         if (!this.d6_geometry) this.d6_geometry = this.create_d6_geometry(scale * 2);
@@ -429,7 +427,7 @@
     }
 
     this.dice_box.prototype.create_dice = function(type, pos, velocity, angle, axis) {
-        var dice = that['create_' + type](70);
+        var dice = that['create_' + type](65);
         dice.castShadow = true;
         dice.dice_type = type;
         dice.body = new CANNON.RigidBody(that.dice_mass[type],
@@ -644,7 +642,7 @@
         this.scene.add(this.pane);
 
         for (var i = 0, pos = -0.5; i < that.known_types.length; ++i, ++pos) {
-            var dice = $t.dice['create_' + that.known_types[i]](70);
+            var dice = $t.dice['create_' + that.known_types[i]](65);
             dice.position.set(pos * step, 0, (step * 0.5));
             dice.castShadow = true;
             dice.userData = that.known_types[i];
