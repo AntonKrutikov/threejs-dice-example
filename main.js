@@ -59,11 +59,11 @@ function dice_initialize(container) {
     }
     let throws = 0
     function before_roll(vectors, notation, callback) {
-        throws++
-        if (throws == 3) {
-            info_div.style.display = 'block';
-            return
-        }
+        // throws++
+        // if (throws == 3) {
+        //     info_div.style.display = 'block';
+        //     return
+        // }
         info_div.style.display = 'none';
         selector_div.style.display = 'none';
         // do here rpc call or whatever to get your own result of throw.

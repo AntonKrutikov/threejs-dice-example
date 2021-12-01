@@ -156,9 +156,14 @@
             var context = canvas.getContext("2d");
             var ts = calc_texture_size(size + size * 2 * margin) * 2;
             canvas.width = canvas.height = ts;
-            context.font = ts / (1 + 2 * margin) + "pt Arial";
+            context.font = ts / (1 + 2.2 * margin) + "pt Arial";
             context.fillStyle = back_color;
             context.fillRect(0, 0, canvas.width, canvas.height);
+            let base_image = document.querySelector('img')
+            context.drawImage(base_image, 0, 0, canvas.width, canvas.height);
+            context.fillStyle = "rgba(0, 0, 0, 0.2)";
+            context.fillRect(0, 0, canvas.width, canvas.height)
+            
             context.textAlign = "center";
             context.textBaseline = "middle";
             context.fillStyle = color;
@@ -166,12 +171,14 @@
             context.translate(canvas.width / 2, canvas.height / 2)
             context.rotate(180*(Math.PI/180))
             context.translate(-canvas.width / 2, -canvas.height / 2)
+           
             if (text == "some time") {
                 context.fillText("some", canvas.width / 2, canvas.height / 2 - 0.1*canvas.height);
                 context.fillText("time", canvas.width / 2, canvas.height / 2 + 0.1*canvas.height);
             } else {
                 context.fillText(text, canvas.width / 2, canvas.height / 2);
             }
+            
             context.restore()
 
             var texture = new THREE.Texture(canvas);
@@ -182,8 +189,7 @@
         var materials = [];
         for (var i = 0; i < face_labels.length; ++i)
             materials.push(new THREE.MeshPhongMaterial($t.copyto(this.material_options,
-                        { map: create_text_texture(face_labels[i], this.label_color, this.dice_color) })));
-        console.log(materials)
+                        { map: create_text_texture(face_labels[i], '#8b8b8b', this.dice_color)})));
         return materials;
     }
 
@@ -285,7 +291,7 @@
     this.material_options = {
         specular: 0x172022,
         color: 0xf0f0f0,
-        shininess: 40,
+        shininess: 25,
         shading: THREE.FlatShading,
     };
     this.label_color = '#aaaaaa';
@@ -748,12 +754,12 @@
             this.dices.push(dice); this.scene.add(dice);
         }
                 
-        let logoTexture = THREE.ImageUtils.loadTexture( "GraticubeTM-400x400.png" );
+        let logoTexture = THREE.ImageUtils.loadTexture( "GraticubeTM-400x400_white.png" );
         console.log(this.cw)
-        var logoGeom = new THREE.PlaneGeometry(400 > this.w ? this.w*1.2 : 400,400);
+        var logoGeom = new THREE.PlaneGeometry(400 * 1.5 > this.w ? this.w*1.5 : 400*1.5,400*1.5);
         var logoMat = new THREE.MeshBasicMaterial(
                             {color: 0xffffff,
-                                map: logoTexture, transparent: true, opacity: 1} );
+                                map: logoTexture, transparent: true, opacity: 0.9} );
         var logoMesh = new THREE.Mesh(logoGeom, logoMat);
         logoMesh.position.set(0, 200, 2);
         this.scene.add(logoMesh);
