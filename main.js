@@ -69,7 +69,6 @@ function dice_initialize(container) {
     }
     $t.bind(container, ['mouseup', 'touchend'], function (ev) {
         ev.stopPropagation();
-        event.preventDefault();
         if (selector_div.style.display == 'none') {
             if (!box.rolling) show_selector();
             box.rolling = false;
@@ -77,11 +76,11 @@ function dice_initialize(container) {
         }
     });
 
-    // window.addEventListener("touchmove", function(event) {
-    //     if (event.target == canvas.querySelector('canvas')) {
-    //       event.preventDefault();
-    //     }
-    //   }, false);
+    window.addEventListener("touchmove", function(event) {
+        if (event.target == canvas.querySelector('canvas')) {
+          event.preventDefault();
+        }
+      }, false);
 
     show_selector();
 }
