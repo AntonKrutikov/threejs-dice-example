@@ -38,6 +38,7 @@ function dice_initialize(container) {
     var canvas = container.querySelector('#canvas')
     canvas.style.width = window.innerWidth - 1 + 'px';
     canvas.style.height = window.innerHeight - 1 + 'px';
+    canvas.style['touch-action'] = 'none';
     var selector_div = $t.id('selector_div');
 
     $t.dice.use_true_random = false;
@@ -68,12 +69,19 @@ function dice_initialize(container) {
     }
     $t.bind(container, ['mouseup', 'touchend'], function (ev) {
         ev.stopPropagation();
+        event.preventDefault();
         if (selector_div.style.display == 'none') {
             if (!box.rolling) show_selector();
             box.rolling = false;
             return;
         }
     });
+
+    window.addEventListener("touchmove", function(event) {
+        if (event.target == canvas.querySelector('canvas')) {
+          event.preventDefault();
+        }
+      }, false);
 
     show_selector();
 }
