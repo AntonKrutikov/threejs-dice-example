@@ -1,3 +1,4 @@
+//Inspired by http://a.teall.info/dice/. Thanks.
 "use strict";
 
 function preload_and_init(container) {

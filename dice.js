@@ -188,8 +188,6 @@
 
             var texture = new THREE.Texture(canvas);
             texture.needsUpdate = true;
-
-            document.body.appendChild(canvas)
             return texture;
         }
         var materials = [];
