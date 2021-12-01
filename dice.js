@@ -151,11 +151,12 @@
             
            
             var ts = calc_texture_size(size + size * 2 * margin) * 2;
+            console.log(ts)
             var canvas = document.createElement("canvas");
-            canvas.width = canvas.height = ts;
+            canvas.width = canvas.height = ts / 4;
             var context = canvas.getContext("2d");
 
-            context.font = ts / (1 + 2.2 * margin) + "pt Arial";
+            context.font = ts / (1 + 2.2 * margin) / 4 + "pt Arial";
             context.fillStyle = back_color;
             context.fillRect(0, 0, canvas.width, canvas.height);
             let base_image = $t.woodTexture
@@ -172,7 +173,7 @@
             context.translate(-canvas.width / 2, -canvas.height / 2)
            
             context.strokeStyle = '#260d0d';
-            context.lineWidth = 10;
+            context.lineWidth = 2;
 
             if (text == "some time") {
                 context.strokeText("some", canvas.width / 2, canvas.height / 2 - 0.1*canvas.height);
