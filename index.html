@@ -5,31 +5,9 @@
 <title></title>
 </head>
 
-<body style="margin: 0;width: 100%;height: 100%;background-color: #000;">
-    <div id="info_div" style="display: none">
-        <div class="center_field">
-            <span id="label"></span>
-        </div>
-        <div class="center_field">
-            <div class="bottom_field">
-                <span id="labelhelp">Need Login</span>
-            </div>
-        </div>
-    </div>
-    <div id="selector_div" style="display: none">
-        <div class="center_field">
-            <!-- <div id="sethelp">
-                choose your dice set by clicking the dices or by direct input of notation,<br/>
-                tap and drag on free space of screen or hit throw button to roll
-            </div> -->
-        </div>
-        <!-- <div class="center_field">
-            <input type="text" id="set" value="4d6"></input><br/>
-            <button id="clear">clear</button>
-            <button style="margin-left: 0.6em" id="throw">throw</button>
-        </div> -->
-    </div>
-    <div id="canvas"></div>
+<body style="margin: 0;width: 100%;height: 100vh">
+    <div id="canvas" style="width: 100%; height:100%;"></div>
+    <div id="selector_div" style="display: none"></div>
 
     <script src="libs/three.min.js"></script>
     <script src="libs/cannon.min.js"></script>
@@ -39,6 +17,9 @@
     <script type="text/javascript" defer="defer">
         document.addEventListener("DOMContentLoaded",function(){
             preload_and_init(document.body)
+            let canv = document.querySelector('canvas')
+            canv.width = 400
+            canv.height = 400
         });
     
     </script>

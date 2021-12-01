@@ -36,8 +36,8 @@ function dice_initialize(container) {
     $t.remove($t.id('loading_text'));
 
     var canvas = container.querySelector('#canvas')
-    canvas.style.width = window.innerWidth - 1 + 'px';
-    canvas.style.height = window.innerHeight - 1 + 'px';
+    // canvas.style.width = container.innerWidth - 1 + 'px';
+    // canvas.style.height = container.innerHeight - 1 + 'px';
     canvas.style['touch-action'] = 'none';
     var selector_div = $t.id('selector_div');
 

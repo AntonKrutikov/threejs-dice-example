@@ -655,7 +655,7 @@
         var logoGeom = new THREE.PlaneGeometry(400*1.5,400*1.5);
         var logoMat = new THREE.MeshBasicMaterial(
                             {color: 0xffffff,
-                                map: logoTexture, transparent: true, opacity: 0.8} );
+                                map: logoTexture, transparent: true, opacity: 1} );
         logoMat.map.magFilter = THREE.LinearFilter;
         logoMat.map.minFilter = THREE.LinearFilter;
         var logoMesh = new THREE.Mesh(logoGeom, logoMat);
