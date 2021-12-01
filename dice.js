@@ -137,10 +137,6 @@
         return geom;
     }
 
-    this.standart_d20_dice_face_labels = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8',
-            '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
-    this.standart_d100_dice_face_labels = [' ', '00', '10', '20', '30', '40', '50',
-            '60', '70', '80', '90'];
     this.standart_d6_dice_face_labels = [' ', ' ', 'never', 'past', 'future', 'always', 'some time', 'now'];
     this.standart_d12_dice_face_labels = [' ', ' ', 'love', 'wisdom', 'gratitude', 'trust', 'gratitude', 'courage', 'shame', 'regret', 'fear', 'desire', 'anger', 'guilt'];
 
@@ -152,14 +148,17 @@
     this.create_dice_materials = function(face_labels, size, margin) {
         function create_text_texture(text, color, back_color) {
             if (text == undefined) return null;
-            var canvas = document.createElement("canvas");
-            var context = canvas.getContext("2d");
+            
+           
             var ts = calc_texture_size(size + size * 2 * margin) * 2;
+            var canvas = document.createElement("canvas");
             canvas.width = canvas.height = ts;
+            var context = canvas.getContext("2d");
+
             context.font = ts / (1 + 2.2 * margin) + "pt Arial";
             context.fillStyle = back_color;
             context.fillRect(0, 0, canvas.width, canvas.height);
-            let base_image = document.querySelector('img')
+            let base_image = $t.woodTexture
             context.drawImage(base_image, 0, 0, canvas.width, canvas.height);
             context.fillStyle = "rgba(0, 0, 0, 0.2)";
             context.fillRect(0, 0, canvas.width, canvas.height)
@@ -172,69 +171,38 @@
             context.rotate(180*(Math.PI/180))
             context.translate(-canvas.width / 2, -canvas.height / 2)
            
+            context.strokeStyle = '#260d0d';
+            context.lineWidth = 10;
+
             if (text == "some time") {
+                context.strokeText("some", canvas.width / 2, canvas.height / 2 - 0.1*canvas.height);
                 context.fillText("some", canvas.width / 2, canvas.height / 2 - 0.1*canvas.height);
+                context.strokeText("time", canvas.width / 2, canvas.height / 2 + 0.1*canvas.height);
                 context.fillText("time", canvas.width / 2, canvas.height / 2 + 0.1*canvas.height);
             } else {
+                context.strokeText(text, canvas.width / 2, canvas.height / 2);
                 context.fillText(text, canvas.width / 2, canvas.height / 2);
             }
-            
+
             context.restore()
 
             var texture = new THREE.Texture(canvas);
             texture.needsUpdate = true;
-            console.log(texture.rotation)
+
+            document.body.appendChild(canvas)
             return texture;
         }
         var materials = [];
-        for (var i = 0; i < face_labels.length; ++i)
-            materials.push(new THREE.MeshPhongMaterial($t.copyto(this.material_options,
-                        { map: create_text_texture(face_labels[i], '#8b8b8b', this.dice_color)})));
-        return materials;
-    }
-
-    var d4_labels = [
-        [[], [0, 0, 0], [2, 4, 3], [1, 3, 4], [2, 1, 4], [1, 2, 3]],
-        [[], [0, 0, 0], [2, 3, 4], [3, 1, 4], [2, 4, 1], [3, 2, 1]],
-        [[], [0, 0, 0], [4, 3, 2], [3, 4, 1], [4, 2, 1], [3, 1, 2]],
-        [[], [0, 0, 0], [4, 2, 3], [1, 4, 3], [4, 1, 2], [1, 3, 2]]
-    ];
-
-    this.create_d4_materials = function(size, margin, labels) {
-        function create_d4_text(text, color, back_color) {
-            var canvas = document.createElement("canvas");
-            var context = canvas.getContext("2d");
-            var ts = calc_texture_size(size + margin) * 2;
-            canvas.width = canvas.height = ts;
-            context.font = (ts - margin) / 1.5 + "pt Arial";
-            context.fillStyle = back_color;
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            context.textAlign = "center";
-            context.textBaseline = "middle";
-            context.fillStyle = color;
-            for (var i in text) {
-                context.fillText(text[i], canvas.width / 2,
-                        canvas.height / 2 - ts * 0.3);
-                context.translate(canvas.width / 2, canvas.height / 2);
-                context.rotate(Math.PI * 2 / 3);
-                context.translate(-canvas.width / 2, -canvas.height / 2);
-            }
-            var texture = new THREE.Texture(canvas);
-            texture.needsUpdate = true;
-            return texture;
+        for (var i = 0; i < face_labels.length; ++i) {
+            let material = new THREE.MeshPhongMaterial($t.copyto(this.material_options,
+                { map: create_text_texture(face_labels[i], '#ababab', this.dice_color)}))
+            // material.map.magFilter = THREE.NearestFilter;
+            material.map.minFilter = THREE.LinearMipMapLinearFilter;
+            materials.push(material);
         }
-        var materials = [];
-        for (var i = 0; i < labels.length; ++i)
-            materials.push(new THREE.MeshPhongMaterial($t.copyto(this.material_options,
-                        { map: create_d4_text(labels[i], this.label_color, this.dice_color) })));
         return materials;
     }
 
-    this.create_d4_geometry = function(radius) {
-        var vertices = [[1, 1, 1], [-1, -1, 1], [-1, 1, -1], [1, -1, -1]];
-        var faces = [[1, 0, 2, 1], [0, 1, 3, 2], [0, 3, 2, 3], [1, 2, 3, 4]];
-        return create_geom(vertices, faces, radius, -0.1, Math.PI * 7 / 6, 0.96);
-    }
 
     this.create_d6_geometry = function(radius) {
         var vertices = [[-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
@@ -244,25 +212,6 @@
         return create_geom(vertices, faces, radius, 0.1, Math.PI / 4, 0.96);
     }
 
-    this.create_d8_geometry = function(radius) {
-        var vertices = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
-        var faces = [[0, 2, 4, 1], [0, 4, 3, 2], [0, 3, 5, 3], [0, 5, 2, 4], [1, 3, 4, 5],
-                [1, 4, 2, 6], [1, 2, 5, 7], [1, 5, 3, 8]];
-        return create_geom(vertices, faces, radius, 0, -Math.PI / 4 / 2, 0.965);
-    }
-
-    this.create_d10_geometry = function(radius) {
-        var a = Math.PI * 2 / 10, k = Math.cos(a), h = 0.105, v = -1;
-        var vertices = [];
-        for (var i = 0, b = 0; i < 10; ++i, b += a)
-            vertices.push([Math.cos(b), Math.sin(b), h * (i % 2 ? 1 : -1)]);
-        vertices.push([0, 0, -1]); vertices.push([0, 0, 1]);
-        var faces = [[5, 7, 11, 0], [4, 2, 10, 1], [1, 3, 11, 2], [0, 8, 10, 3], [7, 9, 11, 4],
-                [8, 6, 10, 5], [9, 1, 11, 6], [2, 0, 10, 7], [3, 5, 11, 8], [6, 4, 10, 9],
-                [1, 0, 2, v], [1, 2, 3, v], [3, 2, 4, v], [3, 4, 5, v], [5, 4, 6, v],
-                [5, 6, 7, v], [7, 6, 8, v], [7, 8, 9, v], [9, 8, 0, v], [9, 0, 1, v]];
-        return create_geom(vertices, faces, radius, 0, Math.PI * 6 / 5, 0.945);
-    }
 
     this.create_d12_geometry = function(radius) {
         var p = (1 + Math.sqrt(5)) / 2, q = 1 / p;
@@ -276,22 +225,11 @@
         return create_geom(vertices, faces, radius, 0.2, -Math.PI / 4 / 2, 0.968);
     }
 
-    this.create_d20_geometry = function(radius) {
-        var t = (1 + Math.sqrt(5)) / 2;
-        var vertices = [[-1, t, 0], [1, t, 0 ], [-1, -t, 0], [1, -t, 0],
-                [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
-                [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]];
-        var faces = [[0, 11, 5, 1], [0, 5, 1, 2], [0, 1, 7, 3], [0, 7, 10, 4], [0, 10, 11, 5],
-                [1, 5, 9, 6], [5, 11, 4, 7], [11, 10, 2, 8], [10, 7, 6, 9], [7, 1, 8, 10],
-                [3, 9, 4, 11], [3, 4, 2, 12], [3, 2, 6, 13], [3, 6, 8, 14], [3, 8, 9, 15],
-                [4, 9, 5, 16], [2, 4, 11, 17], [6, 2, 10, 18], [8, 6, 7, 19], [9, 8, 1, 20]];
-        return create_geom(vertices, faces, radius, -0.2, -Math.PI / 4 / 2, 0.955);
-    }
 
     this.material_options = {
         specular: 0x172022,
         color: 0xf0f0f0,
-        shininess: 25,
+        shininess: 15,
         shading: THREE.FlatShading,
     };
     this.label_color = '#aaaaaa';
@@ -302,16 +240,13 @@
     this.desk_color = 0x000000;
     this.use_shadows = true;
 
-    // this.known_types = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
     this.known_types = ['d6', 'd12'];
-    this.dice_face_range = { 'd4': [1, 4], 'd6': [1, 6], 'd8': [1, 8], 'd10': [0, 9], 
-        'd12': [1, 12], 'd20': [1, 20], 'd100': [0, 9] };
-    this.dice_mass = { 'd4': 300, 'd6': 300, 'd8': 340, 'd10': 350, 'd12': 350, 'd20': 400, 'd100': 350 };
-    this.dice_inertia = { 'd4': 5, 'd6': 13, 'd8': 10, 'd10': 9, 'd12': 8, 'd20': 6, 'd100': 9 };
+    this.dice_face_range = { 'd6': [1, 6], 'd12': [1, 12]};
+    this.dice_mass = { 'd6': 300, 'd12': 350};
+    this.dice_inertia = { 'd6': 13, 'd12': 8};
 
     this.scale = 250;
     
-
     this.create_d6 = (scale) => {
         if (!this.d6_geometry) this.d6_geometry = this.create_d6_geometry(scale * 2);
         if (!this.d6_material) this.d6_material = new THREE.MeshFaceMaterial(
@@ -327,29 +262,6 @@
         return new THREE.Mesh(this.d12_geometry, this.d12);
     }
 
-    this.parse_notation = function(notation) {
-        var no = notation.split('@');
-        var dr0 = /\s*(\d*)([a-z]+)(\d+)(\s*(\+|\-)\s*(\d+)){0,1}\s*(\+|$)/gi;
-        var dr1 = /(\b)*(\d+)(\b)*/gi;
-        var ret = { set: [], constant: 0, result: [], error: false }, res;
-        while (res = dr0.exec(no[0])) {
-            var command = res[2];
-            if (command != 'd') { ret.error = true; continue; }
-            var count = parseInt(res[1]);
-            if (res[1] == '') count = 1;
-            var type = 'd' + res[3];
-            if (this.known_types.indexOf(type) == -1) { ret.error = true; continue; }
-            while (count--) ret.set.push(type);
-            if (res[5] && res[6]) {
-                if (res[5] == '+') ret.constant += parseInt(res[6]);
-                else ret.constant -= parseInt(res[6]);
-            }
-        }
-        while (res = dr1.exec(no[1])) {
-            ret.result.push(parseInt(res[2]));
-        }
-        return ret;
-    }
 
     this.stringify_notation = function(nn) {
         var dict = {}, notation = '';
@@ -476,16 +388,6 @@
                 new THREE.MeshPhongMaterial({ color: that.desk_color }));
         this.desk.receiveShadow = that.use_shadows;
         this.scene.add(this.desk);
-
-        // let logoTexture = THREE.ImageUtils.loadTexture( "/GraticubeTM-w.png" );
-
-        // var logoGeom = new THREE.PlaneGeometry(389,100);
-        // var logoMat = new THREE.MeshBasicMaterial(
-        //                     {color: 0xffffff,
-        //                         map: logoTexture, transparent: true} );
-        // var logoMesh = new THREE.Mesh(logoGeom, logoMat);
-        // this.scene.add(logoMesh);
-
         this.renderer.render(this.scene, this.camera);
     }
 
@@ -500,8 +402,10 @@
         return vec;
     }
 
-    this.dice_box.prototype.generate_vectors = function(notation, vector, boost) {
+    this.dice_box.prototype.generate_vectors = function(vector, boost) {
         var vectors = [];
+        var notation = {}
+        notation.set = ['d6','d12']
         for (var i in notation.set) {
             var vec = make_random_vector(vector);
             var pos = {
@@ -740,22 +644,17 @@
         this.pane.position.set(0, 0, 1);
         this.scene.add(this.pane);
 
-
-
-        var mouse_captured = false;
-
-
         for (var i = 0, pos = -0.5; i < that.known_types.length; ++i, ++pos) {
             var dice = $t.dice['create_' + that.known_types[i]](70);
             dice.position.set(pos * step, 0, (step * 0.5));
             dice.castShadow = true;
             dice.userData = that.known_types[i];
-            console.log(dice)
             this.dices.push(dice); this.scene.add(dice);
         }
                 
-        let logoTexture = THREE.ImageUtils.loadTexture( "GraticubeTM-400x400_white.png" );
-        console.log(this.cw)
+        let logoTexture = new THREE.Texture($t.logoTexture);
+        logoTexture.needsUpdate = true
+
         var logoGeom = new THREE.PlaneGeometry(400 * 1.5 > this.w ? this.w*1.5 : 400*1.5,400*1.5);
         var logoMat = new THREE.MeshBasicMaterial(
                             {color: 0xffffff,
@@ -771,31 +670,29 @@
         this.renderer.render(this.scene, this.camera);
     }
 
-    function throw_dices(box, vector, boost, dist, notation_getter, before_roll, after_roll) {
+    function throw_dices(box, vector, boost, dist, before_roll, after_roll) {
         var uat = $t.dice.use_adapvite_timestep;
         function roll(request_results) {
             if (after_roll) {
                 box.clear();
-                box.roll(vectors, request_results || notation.result, function(result) {
-                    if (after_roll) after_roll.call(box, notation, result);
+                box.roll(vectors, request_results, function(result) {
+                    if (after_roll) after_roll.call(box, result);
                     box.rolling = false;
                     $t.dice.use_adapvite_timestep = uat;
                 });
             }
         }
         vector.x /= dist; vector.y /= dist;
-        var notation = notation_getter.call(box);
-        if (notation.set.length == 0) return;
-        var vectors = box.generate_vectors(notation, vector, boost);
+        var vectors = box.generate_vectors(vector, boost);
         box.rolling = true;
-        if (before_roll) before_roll.call(box, vectors, notation, roll);
+        if (before_roll) before_roll.call(box, vectors, roll);
         else roll();
     }
 
-    this.dice_box.prototype.bind_mouse = function(container, notation_getter, before_roll, after_roll) {
+    this.dice_box.prototype.bind_mouse = function(container, before_roll, after_roll) {
         var box = this;
         $t.bind(container, ['mousedown', 'touchstart'], function(ev) {
-            ev.preventDefault();
+            ev.cancelable && ev.preventDefault();
             box.mouse_time = (new Date()).getTime();
             box.mouse_start = $t.get_mouse_coords(ev);
         });
@@ -812,27 +709,27 @@
             if (time_int > 2000) time_int = 2000;
             var boost = Math.sqrt((2500 - time_int) / 2500) * dist * 2;
             prepare_rnd(function() {
-                throw_dices(box, vector, boost, dist, notation_getter, before_roll, after_roll);
+                throw_dices(box, vector, boost, dist, before_roll, after_roll);
             });
         });
     }
 
-    this.dice_box.prototype.bind_throw = function(button, notation_getter, before_roll, after_roll) {
+    this.dice_box.prototype.bind_throw = function(button, before_roll, after_roll) {
         var box = this;
         $t.bind(button, ['mouseup', 'touchend'], function(ev) {
             ev.stopPropagation();
-            box.start_throw(notation_getter, before_roll, after_roll);
+            box.start_throw(before_roll, after_roll);
         });
     }
 
-    this.dice_box.prototype.start_throw = function(notation_getter, before_roll, after_roll) {
+    this.dice_box.prototype.start_throw = function(before_roll, after_roll) {
         var box = this;
         if (box.rolling) return;
         prepare_rnd(function() {
             var vector = { x: (rnd() * 2 - 1) * box.w, y: -(rnd() * 2 - 1) * box.h };
             var dist = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
             var boost = (rnd() + 3) * dist;
-            throw_dices(box, vector, boost, dist, notation_getter, before_roll, after_roll);
+            throw_dices(box, vector, boost, dist, before_roll, after_roll);
         });
     }
 
