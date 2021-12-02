@@ -233,7 +233,7 @@
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" defer="defer">
         document.addEventListener("DOMContentLoaded", function () {
-            let init = preload_and_init(document.body)
+            let init = preload_and_init(document.body, 'logo_rainbow_400.png', 'wood.jpeg')
 
             init.then((box) => {
                 console.log(box.desk.material.color)//= '#ffffff'

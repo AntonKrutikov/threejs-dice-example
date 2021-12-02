@@ -1,14 +1,14 @@
 //Inspired by http://a.teall.info/dice/. Thanks.
 "use strict";
 
-function preload_and_init(container) {
+function preload_and_init(container, logoTexturePath, woodTexturePath) {
     let loadLogoTexture = () => {
         return new Promise(function (resolve){
             let img = new Image()
             img.onload = () => {
                 resolve(img)
             }
-            img.src = 'logo_rainbow_400.png'
+            img.src = logoTexturePath
         }) 
     }
 
@@ -18,7 +18,7 @@ function preload_and_init(container) {
             img.onload = () => {
                 resolve(img)
             }
-            img.src = 'wood.jpeg'
+            img.src = woodTexturePath
         }) 
     }
 
