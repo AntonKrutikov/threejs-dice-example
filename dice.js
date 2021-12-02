@@ -389,10 +389,8 @@
     }
 
     this.dice_box.prototype.change_theme = function(color) {
-        that.selector_back_colors = { color: color};
         that.desk_color = color;
         this.desk.material.color.setHex( color )
-        this.pane.material.color.setHex( color )
     }
 
     function make_random_vector(vector) {
