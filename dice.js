@@ -642,11 +642,11 @@
     this.dice_box.prototype.draw_selector = function() {
         this.clear();
         var step = 300;
-        this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w, this.h * 0.9, 1, 1), 
-                new THREE.MeshPhongMaterial(that.selector_back_colors));
-        this.pane.receiveShadow = true;
-        this.pane.position.set(0, 0, 1);
-        this.scene.add(this.pane);
+        // this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w, this.h * 0.9, 1, 1), 
+        //         new THREE.MeshPhongMaterial(that.selector_back_colors));
+        // this.pane.receiveShadow = true;
+        // this.pane.position.set(0, 0, 1);
+        // this.scene.add(this.pane);
 
         for (var i = 0, pos = -0.5; i < that.known_types.length; ++i, ++pos) {
             var dice = $t.dice['create_' + that.known_types[i]](65);
