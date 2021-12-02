@@ -1,13 +1,227 @@
 <!DOCTYPE html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="viewport" property="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes"/>
-<title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" property="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes" />
+    <title></title>
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+    <style>
+        html {
+            height: 100%;
+        }
+
+        #header {
+            position: absolute;
+            top: 2rem;
+            width: 100%;
+            color: #fff;
+            display: flex;
+            flex-direction: row;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #header .left,
+        #header .right {
+            flex: 1;
+            padding: 0 2rem;
+            justify-content: center;
+        }
+
+        #header .left {
+            text-align: right;
+            border-right: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        #header .right {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+        }
+
+        #throw-tip {
+            position: absolute;
+            width: 100%;
+            top: 4rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 1px;
+            text-align: center;
+            /* animation-name: fadeIn linear 5s forwards; */
+
+        }
+
+        #intro span {
+            opacity: 0;
+            /* animation-name: fadeIn;
+            animation-duration: 5s;
+            
+            transition-timing-function: linear;
+            animation-fill-mode: forwards; */
+        }
+
+        #intro span:nth-child(1) {
+            animation: fadeIn 3s forwards;
+            animation-delay: 0s;
+        }
+
+        #intro span:nth-child(2) {
+            animation: fadeIn 3s forwards;
+            animation-delay: 0.5s;
+        }
+
+        #intro span:nth-child(3) {
+            animation: fadeIn 3s forwards;
+            animation-delay: 1s;
+        }
+
+        #intro span:nth-child(4) {
+            animation: fadeIn 3s forwards;
+            animation-delay: 1.5s;
+        }
+
+        #intro span:nth-child(5) {
+            animation: fadeIn 3s forwards;
+            animation-delay: 2s;
+        }
+
+
+        #roll {
+            padding-top: 1rem;
+            opacity: 0;
+            animation: fadeIn 5s forwards;
+            animation-delay: 2.5s;
+            font-size: 1.5rem;
+        }
+
+
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        a,
+        a:visited {
+            color: #fff;
+            text-decoration: none;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        #mail {
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        #mail a,
+        #mail a:visited {
+            box-sizing: border-box;
+            /* width: 200px; */
+            /* background: rgba(243, 108, 46, 0.9); */
+            background: -webkit-linear-gradient(top, #f4cc53 0%, #ef7517 100%);
+            letter-spacing: 1px;
+            color: #fbfbfb;
+            padding: 1rem;
+            clip-path: polygon(0 10px,
+                    10px 0,
+                    calc(100% - 10px) 0,
+                    100% 10px,
+                    100% calc(100% - 10px),
+                    calc(100% - 10px) 100%,
+                    10px 100%,
+                    0% calc(100% - 10px),
+                    0% 10px)
+        }
+
+        #mail-info {
+            opacity: 0;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.8);
+            animation: fadeIn 3s forwards;
+            animation-delay: 3s;
+            letter-spacing: 1px;
+        }
+
+        #mail-href-container {
+            font-size: 0.8rem;
+            padding-top: 0.5rem;
+            display: flex;
+            filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+
+        }
+
+        #mail a:hover {
+            text-decoration: none;
+        }
+
+        .letter-g {
+            color: #cc273b;
+        }
+
+        .letter-i {
+            color: #864a7a;
+        }
+        .letter-w {
+            color: #f68b63;
+        }
+        .letter-b {
+            color: #70cde2;
+        }
+        .letter-c {
+            color: #695ba8;
+        }
+        .letter-d {
+            color: #cc273b;
+        }
+    </style>
 </head>
 
-<body style="margin: 0;width: 100%;height: 100vh">
-    <div id="canvas" style="width: 100%; height:100%;"></div>
+<body style="margin: 0;width: 100%;height: 100%; overflow: hidden;">
+    <div id="header">
+        <section class="left"><a href="https://graticube.game/">Graticube™</a></section>
+        <section class="right"><a href="https://www.youtube.com/channel/UCIypcKCoYvG0cglnMI7THLg">How to Play<span
+                    style="color: red"><i class="fab fa-youtube" style="padding: 0 0.5rem;"></i></span></a></section>
+    </div>
+    <div id="throw-tip">
+        <section id="intro">
+            <span><span class="letter-g">G</span>raticube™</span> 
+            <span><span class="letter-i">i</span>s a small game</span> 
+            <span><span class="letter-w">w</span>ith a big heart</span> 
+            <span><span class="letter-b">b</span>ased on a true story.</span> 
+            <span><span class="letter-c">C</span>reate space, <span class="letter-d">d</span>raw a card,</span>
+        </section>
+        <section id="roll">
+            Roll the cubes!
+        </section>
+    </div>
+    <div id="canvas" style="width: 100%; height:100%; min-height: 500px;"></div>
     <div id="selector_div" style="display: none"></div>
+    <div id="mail">
+        <div id="mail-info">
+            Click the button below to send us an e-mail with your name and mailing address, and what you feel most grateful for in this moment.
+        </div>
+        <div id="mail-href-container">
+            <a href="mailto:social@graticube.game?subject=I%20want%20to%20play%20Graticube&trade">
+                I WANT TO PLAY
+            </a>
+        </div>
+    </div>
 
     <script src="libs/three.min.js"></script>
     <script src="libs/cannon.min.js"></script>
@@ -15,13 +229,11 @@
     <script type="text/javascript" src="dice.js"></script>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" defer="defer">
-        document.addEventListener("DOMContentLoaded",function(){
+        document.addEventListener("DOMContentLoaded", function () {
             preload_and_init(document.body)
-            let canv = document.querySelector('canvas')
-            canv.width = 400
-            canv.height = 400
         });
-    
+
     </script>
 </body>
+
 </html>

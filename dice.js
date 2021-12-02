@@ -635,7 +635,7 @@
     this.dice_box.prototype.draw_selector = function() {
         this.clear();
         var step = 300;
-        this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w * 6, this.h * 6, 1, 1), 
+        this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w , this.h, 1, 1), 
                 new THREE.MeshPhongMaterial(that.selector_back_colors));
         this.pane.receiveShadow = true;
         this.pane.position.set(0, 0, 1);
@@ -643,7 +643,7 @@
 
         for (var i = 0, pos = -0.5; i < that.known_types.length; ++i, ++pos) {
             var dice = $t.dice['create_' + that.known_types[i]](65);
-            dice.position.set(pos * step, 0, (step * 0.5));
+            dice.position.set(pos * step, -200*1.5+100, (step * 0.5));
             dice.castShadow = true;
             dice.userData = that.known_types[i];
             this.dices.push(dice); this.scene.add(dice);
@@ -659,7 +659,8 @@
         logoMat.map.magFilter = THREE.LinearFilter;
         logoMat.map.minFilter = THREE.LinearFilter;
         var logoMesh = new THREE.Mesh(logoGeom, logoMat);
-        logoMesh.position.set(0, 200, 2);
+        console.log($t.canvas)
+        logoMesh.position.set(0, 0, 2);
         this.scene.add(logoMesh);
 
         this.running = (new Date()).getTime();
