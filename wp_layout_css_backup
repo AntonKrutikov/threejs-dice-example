@@ -1,0 +1,120 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.g-cols.via_flex.type_default {
+    margin: 0;
+    height: 100%;
+}
+
+.l-canvas, .l-section, .l-section-h ,#page-content {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.wpb_wrapper:nth-child(1) {
+    flex: 1;
+}
+
+
+#canvas {
+    overflow: hidden;
+}
+
+.hover-link:hover {
+   text-decoration: underline;
+}
+
+.letter-g {
+    color: #cc273b;
+}
+
+.letter-i {
+    color: #864a7a;
+}
+.letter-w {
+    color: #f68b63;
+}
+.letter-b {
+    color: #70cde2;
+}
+.letter-c {
+    color: #695ba8;
+}
+.letter-d {
+    color: #cc273b;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#main-info {
+    line-height: 1rem;
+}
+
+#main-info span, #footer-info {
+    opacity: 0;
+    animation: fadeIn 3s forwards;
+}
+
+#main-info span:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+#main-info span:nth-child(3) {
+    animation-delay: 1s;
+}
+
+#main-info span:nth-child(4) {
+    animation-delay: 1.5s;
+}
+
+#main-info span:nth-child(5) {
+    animation-delay: 2s;
+}
+
+#main-info span:nth-child(6) {
+    animation-delay: 2.5s;
+}
+
+#main-info span:nth-child(7) {
+    animation-delay: 3s;
+}
+
+#footer-info {
+    opacity: 0;
+    animation-delay: 1s;
+}
+
+#want-to-play-button {
+                clip-path: polygon(0 10px,
+                    10px 0,
+                    calc(100% - 10px) 0,
+                    100% 10px,
+                    100% calc(100% - 10px),
+                    calc(100% - 10px) 100%,
+                    10px 100%,
+                    0% calc(100% - 10px),
+                    0% 10px)
+}
+
+#theme-switcher {
+    cursor: pointer;
+}
