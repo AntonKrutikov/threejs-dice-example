@@ -388,6 +388,13 @@
         this.renderer.render(this.scene, this.camera);
     }
 
+    this.dice_box.prototype.change_theme = function(color) {
+        that.selector_back_colors = { color: color};
+        that.desk_color = color;
+        this.desk.material.color.setHex( color )
+        this.pane.material.color.setHex( color )
+    }
+
     function make_random_vector(vector) {
         var random_angle = rnd() * Math.PI / 5 - Math.PI / 5 / 2;
         var vec = {
@@ -635,7 +642,7 @@
     this.dice_box.prototype.draw_selector = function() {
         this.clear();
         var step = 300;
-        this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w , this.h, 1, 1), 
+        this.pane = new THREE.Mesh(new THREE.PlaneGeometry(this.w, this.h, 1, 1), 
                 new THREE.MeshPhongMaterial(that.selector_back_colors));
         this.pane.receiveShadow = true;
         this.pane.position.set(0, 0, 1);
@@ -659,13 +666,14 @@
         logoMat.map.magFilter = THREE.LinearFilter;
         logoMat.map.minFilter = THREE.LinearFilter;
         var logoMesh = new THREE.Mesh(logoGeom, logoMat);
-        console.log($t.canvas)
         logoMesh.position.set(0, 0, 2);
         this.scene.add(logoMesh);
 
         this.running = (new Date()).getTime();
         this.last_time = 0;
         this.renderer.render(this.scene, this.camera);
+
+        return this
     }
 
     function throw_dices(box, vector, boost, dist, before_roll, after_roll) {

@@ -22,15 +22,18 @@ function preload_and_init(container) {
         }) 
     }
 
-    Promise.all([loadLogoTexture(), loadWoodTexture()])
+    return Promise.all([loadLogoTexture(), loadWoodTexture()])
     .then((result) => {
         $t.logoTexture = result[0]
         $t.woodTexture = result[1]
 
-        dice_initialize(container)
+        let box = dice_initialize(container)
+        return box
     })
 
 }
+
+var box
 
 function dice_initialize(container) {
     $t.remove($t.id('loading_text'));
@@ -43,7 +46,7 @@ function dice_initialize(container) {
 
     $t.dice.use_true_random = false;
 
-    var box = new $t.dice.dice_box(canvas, { w: canvas.getBoundingClientRect().width, h: canvas.getBoundingClientRect().height });
+    box = new $t.dice.dice_box(canvas, { w: canvas.getBoundingClientRect().width, h: canvas.getBoundingClientRect().height });
     box.animate_selector = false;
 
     $t.bind(window, 'resize', function () {
@@ -65,12 +68,12 @@ function dice_initialize(container) {
     box.bind_throw($t.id('throw'), before_roll, after_roll);
 
     function show_selector() {
-        box.draw_selector();
+        return box.draw_selector();
     }
     $t.bind(container, ['mouseup', 'touchend'], function (ev) {
         ev.stopPropagation();
         if (selector_div.style.display == 'none') {
-            if (!box.rolling) show_selector();
+            if (!box.rolling) return show_selector();
             box.rolling = false;
             return;
         }
@@ -82,5 +85,5 @@ function dice_initialize(container) {
         }
       }, false);
 
-    show_selector();
+    return show_selector();
 }
