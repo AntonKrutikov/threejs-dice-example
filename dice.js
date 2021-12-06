@@ -138,7 +138,7 @@
     }
 
     this.standart_d6_dice_face_labels = [' ', ' ', 'never', 'past', 'future', 'always', 'some time', 'now'];
-    this.standart_d12_dice_face_labels = [' ', ' ', 'love', 'wisdom', 'gratitude', 'trust', 'gratitude', 'courage', 'shame', 'regret', 'fear', 'desire', 'anger', 'guilt'];
+    this.standart_d12_dice_face_labels = [' ', ' ', 'love', 'wisdom', 'gratitude', 'trust', 'joy', 'courage', 'shame', 'regret', 'fear', 'desire', 'anger', 'guilt'];
 
 
     function calc_texture_size(approx) {
